@@ -1,0 +1,2 @@
+# 自动装配的入口
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.company.bbkb.demo.DemoAutoConfiguration

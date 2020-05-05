@@ -41,6 +41,7 @@ import org.springframework.context.annotation.Conditional;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Conditional(OnClassCondition.class)
+// 满足什么条件才装配，类路径下存在
 public @interface ConditionalOnClass {
 
 	/**

@@ -268,14 +268,19 @@ public class SpringApplication {
 		this.resourceLoader = resourceLoader;
 		Assert.notNull(primarySources, "PrimarySources must not be null");
 		this.primarySources = new LinkedHashSet<>(Arrays.asList(primarySources));
+		// 判断当前应用的类型是否为 WEB
 		this.webApplicationType = WebApplicationType.deduceFromClasspath();
+		// 初始化器，点进去，发现读取的也是 "META-INF/spring.factories"
 		setInitializers((Collection) getSpringFactoriesInstances(ApplicationContextInitializer.class));
+		// 监听器，点进去，发现读取的也是 "META-INF/spring.factories"
 		setListeners((Collection) getSpringFactoriesInstances(ApplicationListener.class));
+		// 推断入口类，点进去
 		this.mainApplicationClass = deduceMainApplicationClass();
 	}
 
 	private Class<?> deduceMainApplicationClass() {
 		try {
+			// 根据异常栈来推断 main 方法，巧妙
 			StackTraceElement[] stackTrace = new RuntimeException().getStackTrace();
 			for (StackTraceElement stackTraceElement : stackTrace) {
 				if ("main".equals(stackTraceElement.getMethodName())) {
@@ -296,29 +301,38 @@ public class SpringApplication {
 	 * @return a running {@link ApplicationContext}
 	 */
 	public ConfigurableApplicationContext run(String... args) {
+		// 计时器，记录应用启动的时间
 		StopWatch stopWatch = new StopWatch();
 		stopWatch.start();
 		ConfigurableApplicationContext context = null;
+		// 异常报告集合
 		Collection<SpringBootExceptionReporter> exceptionReporters = new ArrayList<>();
 		configureHeadlessProperty();
+		// 监听器，点进去，SpringFactoriesLoader.loadFactoryNames 读取的也是 META-INF/spring.factories, 类型为 SpringApplicationRunListener
 		SpringApplicationRunListeners listeners = getRunListeners(args);
 		listeners.starting();
 		try {
 			ApplicationArguments applicationArguments = new DefaultApplicationArguments(args);
+			// 环境的准备
 			ConfigurableEnvironment environment = prepareEnvironment(listeners, applicationArguments);
 			configureIgnoreBeanInfo(environment);
+			// 启动 Banner
 			Banner printedBanner = printBanner(environment);
+			// 创建应用上下文
 			context = createApplicationContext();
 			exceptionReporters = getSpringFactoriesInstances(SpringBootExceptionReporter.class,
 					new Class[] { ConfigurableApplicationContext.class }, context);
 			prepareContext(context, environment, listeners, applicationArguments, printedBanner);
+			// 刷新上下文，点进去
 			refreshContext(context);
 			afterRefresh(context, applicationArguments);
 			stopWatch.stop();
 			if (this.logStartupInfo) {
+				// 日志的处理
 				new StartupInfoLogger(this.mainApplicationClass).logStarted(getApplicationLog(), stopWatch);
 			}
 			listeners.started(context);
+			// 实现启动时的回调方法，点进去
 			callRunners(context, applicationArguments);
 		}
 		catch (Throwable ex) {
@@ -744,6 +758,7 @@ public class SpringApplication {
 	 */
 	protected void refresh(ApplicationContext applicationContext) {
 		Assert.isInstanceOf(AbstractApplicationContext.class, applicationContext);
+		// 点进去，找到 onRefresh();--》 org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh
 		((AbstractApplicationContext) applicationContext).refresh();
 	}
 

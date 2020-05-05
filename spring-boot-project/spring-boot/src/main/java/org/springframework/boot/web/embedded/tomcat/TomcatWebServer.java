@@ -85,6 +85,7 @@ public class TomcatWebServer implements WebServer {
 		Assert.notNull(tomcat, "Tomcat Server must not be null");
 		this.tomcat = tomcat;
 		this.autoStart = autoStart;
+		// Tomcat 初始化
 		initialize();
 	}
 

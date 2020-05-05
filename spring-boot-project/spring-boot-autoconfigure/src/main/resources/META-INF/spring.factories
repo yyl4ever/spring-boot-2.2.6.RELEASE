@@ -18,6 +18,7 @@ org.springframework.boot.autoconfigure.condition.OnClassCondition,\
 org.springframework.boot.autoconfigure.condition.OnWebApplicationCondition
 
 # Auto Configure
+# Attention!! 自动装配的入口,比如 ServletWebServerFactoryAutoConfiguration 实现内置 Tomcat 容器的装配
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 org.springframework.boot.autoconfigure.admin.SpringApplicationAdminJmxAutoConfiguration,\
 org.springframework.boot.autoconfigure.aop.AopAutoConfiguration,\

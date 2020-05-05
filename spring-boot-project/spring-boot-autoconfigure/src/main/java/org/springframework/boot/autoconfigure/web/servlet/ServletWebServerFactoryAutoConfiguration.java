@@ -59,6 +59,7 @@ import org.springframework.web.filter.ForwardedHeaderFilter;
 @AutoConfigureOrder(Ordered.HIGHEST_PRECEDENCE)
 @ConditionalOnClass(ServletRequest.class)
 @ConditionalOnWebApplication(type = Type.SERVLET)
+// 引入默认的配置： ServerProperties
 @EnableConfigurationProperties(ServerProperties.class)
 @Import({ ServletWebServerFactoryAutoConfiguration.BeanPostProcessorsRegistrar.class,
 		ServletWebServerFactoryConfiguration.EmbeddedTomcat.class,
@@ -71,6 +72,7 @@ public class ServletWebServerFactoryAutoConfiguration {
 		return new ServletWebServerFactoryCustomizer(serverProperties);
 	}
 
+	// 内置的 tomcat 容器装配，配置参数：ServerProperties
 	@Bean
 	@ConditionalOnClass(name = "org.apache.catalina.startup.Tomcat")
 	public TomcatServletWebServerFactoryCustomizer tomcatServletWebServerFactoryCustomizer(

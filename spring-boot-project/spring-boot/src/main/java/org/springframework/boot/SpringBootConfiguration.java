@@ -43,6 +43,9 @@ import org.springframework.core.annotation.AliasFor;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
+// @Configuration + @Bean, 可以让我们引入一些 Bean
+// 标记当前的 Bean 是配置 Bean，点进去，可以发现等同于 @Component
+// 让 Bean 被 Spring IOC 容器管理
 @Configuration
 public @interface SpringBootConfiguration {
 
